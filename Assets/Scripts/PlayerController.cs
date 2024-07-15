@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CopySlot[] copySlots;
     public GameObject curItem;
     public CopySlot curSlot;
-
+    public MouseSelect mouseSelect;
     public bool isWateringCan = false;
+    public bool isHoe = false;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         curSlot = copySlots[0];
         curSlot.GetComponent<Outline>().enabled = true;
+        
     }
 
     private void Update()
@@ -63,6 +65,14 @@ public class PlayerController : MonoBehaviour
                             if (!handItems[i].gameObject.activeSelf)
                             {
                                 curItem = handItems[i].gameObject;
+                                if(handItems[i].item.itemType == ItemType.Seed)
+                                {
+                                    mouseSelect.gameObject.SetActive(true);
+                                }
+                                else
+                                {
+                                    mouseSelect.gameObject.SetActive(false);
+                                }
                                 curItem.SetActive(true);
                                 animator.SetTrigger("Item");
                             }
@@ -75,7 +85,17 @@ public class PlayerController : MonoBehaviour
                     switch(curSlot.slot.item.equipmentType)
                     {
                         case EquipmentType.WateringCan: isWateringCan = true; break;
+                        case EquipmentType.Hoe: isHoe = true; break;
                     }
+                }
+            }
+            else
+            {
+                if(curItem != null)
+                {
+                    curItem.SetActive(false);
+                    curItem = null;
+                    mouseSelect.gameObject.SetActive(false);
                 }
             }
         }
@@ -133,8 +153,10 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(code))
         {
             isWateringCan = false;
+            isHoe = false;
+            mouseSelect.gameObject.SetActive(false);
 
-            if(curSlot != null)
+            if (curSlot != null)
             {
                 curSlot.GetComponent<Outline>().enabled = false;
             }
@@ -144,6 +166,10 @@ public class PlayerController : MonoBehaviour
                 curItem.SetActive(false);
             }
             else
+            {
+                curItem = null;
+            }
+            if (copySlots[count].slot.item == null)
             {
                 curItem = null;
             }

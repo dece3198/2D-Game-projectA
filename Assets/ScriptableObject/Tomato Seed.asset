@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7030a509d2f27c4fa8f8e06283b2a53, type: 3}
-  m_Name: WateringCan
+  m_Name: Tomato Seed
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 21300000, guid: e4e1ff76d397fc2469ea6e72b1d9d817, type: 3}
-  itemPrefab: {fileID: 8854661180455686168, guid: 9c694f2e62ce1b9479153c97aeae7a16, type: 3}
-  itemType: 0
-  equipmentType: 7
+  itemImage: {fileID: -1242926471, guid: 09f75d2e150f3c846bd6b35d63ab226b, type: 3}
+  itemPrefab: {fileID: 3243813218861639062, guid: 481c7b090f9ee0e44b166c0547166043, type: 3}
+  Seeds: {fileID: 0}
+  itemType: 4
+  equipmentType: 0

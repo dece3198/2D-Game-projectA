@@ -6,15 +6,19 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
+    public static TileManager instance;
     public PlayerController playerController;
     public Tilemap groundTilmap;
-    public Tilemap farmRandTilemap;
-    public TileBase farmRandTile;
+    public Tilemap farmLandTilemap;
+    public TileBase farmLandTile;
     public Tile previousTile;
+    public float time;
 
     private void Awake()
     {
+        time = 3600;
         playerController = GetComponent<PlayerController>();
+        instance = this;
     }
 
     private void Update()
@@ -23,6 +27,11 @@ public class TileManager : MonoBehaviour
         {
             ChangeTile();
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            time -= 3580;
+        }
     }
 
     public void ChangeTile()
@@ -30,31 +39,38 @@ public class TileManager : MonoBehaviour
         Vector3Int currentCell = groundTilmap.WorldToCell(playerController.transform.position + playerController.LastMove);
         if (previousTile == groundTilmap.GetTile(currentCell))
         {
-            if (farmRandTile != farmRandTilemap.GetTile(currentCell))
+            if (farmLandTile != farmLandTilemap.GetTile(currentCell))
             {
-                farmRandTilemap.SetTile(currentCell, farmRandTile);
+                farmLandTilemap.SetTile(currentCell, farmLandTile);
             }
         }
     }
 
     public void DeleteTile()
     {
-        Vector3Int currentCell = farmRandTilemap.WorldToCell(playerController.transform.position + playerController.LastMove);
+        Vector3Int currentCell = farmLandTilemap.WorldToCell(playerController.transform.position + playerController.LastMove);
 
-        if (farmRandTile == farmRandTilemap.GetTile(currentCell))
+        if (farmLandTile == farmLandTilemap.GetTile(currentCell))
         {
-            farmRandTilemap.SetTile(currentCell, null);
+            farmLandTilemap.SetTile(currentCell, null);
         }
     }
 
     public void ChangeWetTile()
     {
-        Vector3Int currentCell = farmRandTilemap.WorldToCell(playerController.transform.position + playerController.LastMove);
+        Vector3Int currentCell = farmLandTilemap.WorldToCell(playerController.transform.position + playerController.LastMove);
 
-        if (farmRandTile == farmRandTilemap.GetTile(currentCell))
+        if (farmLandTile == farmLandTilemap.GetTile(currentCell))
         {
             Color color = new Color(211f / 255f, 179f / 255f, 165f / 255f, 1);
-            farmRandTilemap.SetColor(currentCell, color);
+            StartCoroutine(WetTileCo(currentCell, color));
         }
+    }
+
+    private IEnumerator WetTileCo(Vector3Int cell, Color _color)
+    {
+        farmLandTilemap.SetColor(cell, _color);
+        yield return new WaitForSeconds(time);
+        farmLandTilemap.SetColor(cell, Color.white);
     }
 }

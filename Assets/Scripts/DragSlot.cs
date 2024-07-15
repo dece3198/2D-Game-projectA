@@ -12,6 +12,7 @@ public class DragSlot : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        itemImage = GetComponent<Image>();
     }
 
     public void DragSetImage(Image _itemImage)

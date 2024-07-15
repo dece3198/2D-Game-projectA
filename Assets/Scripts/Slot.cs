@@ -38,6 +38,10 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         itemCount += count;
         countText.text = itemCount.ToString();
+        if(itemCount <= 0)
+        {
+            ClearSlot();
+        }
     }
 
     private void SetColor(float alpha)
