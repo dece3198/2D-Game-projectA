@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Equipment, Used, Ingredient, ETC, Seed
+    Equipment, Used, Ingredient, ETC
 }
 
 public enum EquipmentType
 {
-    None, Pitching, Armor, Shoes, Necklace, Ring, Sword, WateringCan, Hoe
+    None, Pitching, Armor, Shoes, Necklace, Ring, Sword, Seed, WateringCan, Hoe, Axe
 }
 
 [CreateAssetMenu(fileName = "New Item" , menuName = "New Item/ Item")]

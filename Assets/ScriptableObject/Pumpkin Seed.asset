@@ -15,5 +15,5 @@ MonoBehaviour:
   itemImage: {fileID: 858225351, guid: 6326959f8f49cca489e8131aa49a45db, type: 3}
   itemPrefab: {fileID: 8666953155069535087, guid: 37e845610dc13f04c877b26e9349c8f5, type: 3}
   seed: {fileID: 1945805914404239118, guid: 48228e2b3c826e943aeb7f4b26cc2069, type: 3}
-  itemType: 4
-  equipmentType: 0
+  itemType: 2
+  equipmentType: 7

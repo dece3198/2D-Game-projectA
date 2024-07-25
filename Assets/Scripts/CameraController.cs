@@ -5,15 +5,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    Vector3 offest;
-
-    private void Awake()
-    {
-        offest = transform.position - player.position;
-    }
+    public float speed;
 
     private void Update()
     {
-        transform.position = player.position + offest;
+        transform.position =  Vector3.Lerp(transform.position,player.position, Time.deltaTime * speed);
+        transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
     }
 }

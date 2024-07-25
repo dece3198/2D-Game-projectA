@@ -5,6 +5,7 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     public Item item;
+    public bool isGet = true;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -25,6 +26,9 @@ public class ItemPickUp : MonoBehaviour
             yield return null;
         }
         InventoryManager.instance.AcquireItem(item);
-        Destroy(this.gameObject);
+        if(isGet)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

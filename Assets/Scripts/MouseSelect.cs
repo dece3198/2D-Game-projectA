@@ -25,8 +25,8 @@ public class MouseSelect : MonoBehaviour
         }
         else
         {
-            Vector3Int currentCell = TileManager.instance.groundTilmap.WorldToCell(mPos);
-            if (TileManager.instance.farmLandTile == TileManager.instance.farmLandTilemap.GetTile(currentCell))
+            Vector3Int currentCell = TileManager.instance.groundTilMap.WorldToCell(mPos);
+            if (TileManager.instance.farmLandTile == TileManager.instance.farmLandTileMap.GetTile(currentCell))
             {
                 if (Input.GetButtonDown("Fire1"))
                 {

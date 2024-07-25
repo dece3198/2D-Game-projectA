@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum PlayerEquipmentType
+{
+    None, WateringCan, Hoe, Axe
+}
+
+
 public class PlayerController : MonoBehaviour
 {
     public float speed;
@@ -14,13 +20,11 @@ public class PlayerController : MonoBehaviour
     public Vector3 LastMove;
     public bool isMove;
     public bool isPlayerMove = true;
-    [SerializeField] private  ItemPickUp[] handItems;
     [SerializeField] private CopySlot[] copySlots;
     public GameObject curItem;
     public CopySlot curSlot;
+    public EquipmentType equipmentType;
     public MouseSelect mouseSelect;
-    public bool isWateringCan = false;
-    public bool isHoe = false;
 
     private void Awake()
     {
@@ -50,56 +54,6 @@ public class PlayerController : MonoBehaviour
         ChangeSlot(KeyCode.Alpha0, 9);
         ChangeSlot(KeyCode.KeypadPeriod, 10);
         ChangeSlot(KeyCode.KeypadEquals, 11);
-
-
-        if(curSlot != null)
-        {
-            if (curSlot.slot.item != null)
-            {
-                if(curSlot.slot.item.itemType != ItemType.Equipment)
-                {
-                    for (int i = 0; i < handItems.Length; i++)
-                    {
-                        if (curSlot.slot.item == handItems[i].item)
-                        {
-                            if (!handItems[i].gameObject.activeSelf)
-                            {
-                                curItem = handItems[i].gameObject;
-                                if(handItems[i].item.itemType == ItemType.Seed)
-                                {
-                                    mouseSelect.gameObject.SetActive(true);
-                                }
-                                else
-                                {
-                                    mouseSelect.gameObject.SetActive(false);
-                                }
-                                curItem.SetActive(true);
-                                animator.SetTrigger("Item");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    curItem = null;
-                    switch(curSlot.slot.item.equipmentType)
-                    {
-                        case EquipmentType.WateringCan: isWateringCan = true; break;
-                        case EquipmentType.Hoe: isHoe = true; break;
-                    }
-                }
-            }
-            else
-            {
-                if(curItem != null)
-                {
-                    curItem.SetActive(false);
-                    curItem = null;
-                    mouseSelect.gameObject.SetActive(false);
-                }
-            }
-        }
-
     }
 
     private void FixedUpdate()
@@ -152,29 +106,23 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(code))
         {
-            isWateringCan = false;
-            isHoe = false;
-            mouseSelect.gameObject.SetActive(false);
-
-            if (curSlot != null)
+            if(curSlot != null)
             {
+                if(curItem != null)
+                {
+                    curItem.SetActive(false);
+                    curItem = null;
+                }
+                mouseSelect.gameObject.SetActive(false);
                 curSlot.GetComponent<Outline>().enabled = false;
             }
-
-            if(curItem != null)
-            {
-                curItem.SetActive(false);
-            }
-            else
-            {
-                curItem = null;
-            }
-            if (copySlots[count].slot.item == null)
-            {
-                curItem = null;
-            }
+            copySlots[count].GetComponent<Outline>().enabled = true;
             curSlot = copySlots[count];
-            curSlot.GetComponent<Outline>().enabled = true;
         }
+    }
+
+    public void EquipmentChange(EquipmentType type)
+    {
+        equipmentType = type;
     }
 }
