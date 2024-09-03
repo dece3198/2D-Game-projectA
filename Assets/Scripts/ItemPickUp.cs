@@ -7,11 +7,15 @@ public class ItemPickUp : MonoBehaviour
     public Item item;
     public bool isGet = true;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.GetComponent<PlayerController>() != null)
         {
-            StartCoroutine(PickUpCo(collision));
+            if (isGet)
+            {
+                StartCoroutine(PickUpCo(collision));
+                isGet = false;
+            }
         }
     }
 
@@ -26,9 +30,6 @@ public class ItemPickUp : MonoBehaviour
             yield return null;
         }
         InventoryManager.instance.AcquireItem(item);
-        if(isGet)
-        {
-            Destroy(this.gameObject);
-        }
+        Destroy(this.gameObject);
     }
 }

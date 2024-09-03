@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    [SerializeField] private GameObject slotsParent;
+    public GameObject slotsParent;
     public Slot[] slots;
 
     private void Awake()

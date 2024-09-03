@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public enum PlayerEquipmentType
@@ -20,28 +21,25 @@ public class PlayerController : MonoBehaviour
     public Vector3 LastMove;
     public bool isMove;
     public bool isPlayerMove = true;
+    public bool isItem = true;
     [SerializeField] private CopySlot[] copySlots;
     public GameObject curItem;
     public CopySlot curSlot;
     public EquipmentType equipmentType;
     public MouseSelect mouseSelect;
+    
 
-    private void Awake()
+    private void Awake() 
     {
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         curSlot = copySlots[0];
         curSlot.GetComponent<Outline>().enabled = true;
-        
     }
 
     private void Update()
     {
-        if(isPlayerMove)
-        {
-            PlayerMove();
-        }
         ChangeSlot(KeyCode.Alpha1, 0);
         ChangeSlot(KeyCode.Alpha2, 1);
         ChangeSlot(KeyCode.Alpha3, 2);
@@ -58,8 +56,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 nextVec = inputVec.normalized * speed * Time.deltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
+
+        if (isPlayerMove)
+        {
+            Vector2 nextVec = inputVec.normalized * speed * Time.deltaTime;
+            rigid.MovePosition(rigid.position + nextVec);
+        }
+        PlayerMove();
     }
 
     private void LateUpdate()
@@ -118,6 +121,7 @@ public class PlayerController : MonoBehaviour
             }
             copySlots[count].GetComponent<Outline>().enabled = true;
             curSlot = copySlots[count];
+            isItem = true;
         }
     }
 

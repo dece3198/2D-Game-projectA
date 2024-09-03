@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler,IPointerClickHandler
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler, IPointerDownHandler
 {
     public Item item;
     public Image itemImage;
@@ -44,7 +44,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
     }
 
-    private void SetColor(float alpha)
+    public void SetColor(float alpha)
     {
         Color color = itemImage.color;
         color.a = alpha;
@@ -111,11 +111,11 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(DragSlot.instance.dragSlot != null)
+        if (DragSlot.instance.dragSlot != null)
         {
             if (isSlotActiveSelf)
             {
-                if(slotType != EquipmentType.None)
+                if (slotType != EquipmentType.None)
                 {
                     if (DragSlot.instance.dragSlot.item.equipmentType == slotType)
                     {
@@ -160,8 +160,16 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-
+        if(StoreManager.instance.isButton)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                AddItem(StoreManager.instance.storeSlot.item, StoreManager.instance.storeSlot.itemCount);
+                StoreManager.instance.isButton = false;
+                StoreManager.instance.storeSlot.ClearSlot();
+            }
+        }
     }
 }

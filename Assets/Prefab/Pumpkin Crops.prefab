@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7897988052167294790}
   - component: {fileID: 435269404935670930}
-  - component: {fileID: 87698150954238383}
   - component: {fileID: 4202092241466012325}
+  - component: {fileID: 3378362421515141667}
   m_Layer: 0
   m_Name: Pumpkin Crops
   m_TagString: Untagged
@@ -86,7 +86,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &87698150954238383
+--- !u!114 &4202092241466012325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340866884769848376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14862df4cc4a4e4e80b938cb48776dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: e56b89f1a12f51749995aa8c9b21c8f4, type: 2}
+  crops: {fileID: 8373352634694396055, guid: d76fcaa951974e044bcf7a8d01da20fc, type: 3}
+--- !u!61 &3378362421515141667
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,15 +126,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.38}
   m_EdgeRadius: 0
---- !u!114 &4202092241466012325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3340866884769848376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b14862df4cc4a4e4e80b938cb48776dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

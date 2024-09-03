@@ -17,7 +17,8 @@ public class CameraShake : MonoBehaviour
     {
         float timer = 0;
         originPos = transform.position;
-
+        GameObject player = transform.parent.gameObject;
+        transform.parent = null;
         while(timer < duration)
         {
             transform.localPosition = Random.insideUnitSphere * magnitude + originPos;
@@ -26,5 +27,6 @@ public class CameraShake : MonoBehaviour
         }
 
         transform.localPosition = originPos;
+        transform.parent = player.transform;
     }
 }

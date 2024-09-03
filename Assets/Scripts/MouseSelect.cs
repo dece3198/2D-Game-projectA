@@ -5,12 +5,15 @@ using UnityEngine.Tilemaps;
 
 public class MouseSelect : MonoBehaviour
 {
+    public static MouseSelect instance;
     private new SpriteRenderer renderer;
     [SerializeField] private PlayerController playerController;
+    public bool isSelect = true;
 
     private void Awake()
     {
         renderer = GetComponent<SpriteRenderer>();
+        instance = this;
     }
 
     void Update()
@@ -28,11 +31,16 @@ public class MouseSelect : MonoBehaviour
             Vector3Int currentCell = TileManager.instance.groundTilMap.WorldToCell(mPos);
             if (TileManager.instance.farmLandTile == TileManager.instance.farmLandTileMap.GetTile(currentCell))
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (isSelect)
                 {
-                    GameObject seed = Instantiate(playerController.curItem.GetComponent<ItemPickUp>().item.seed);
-                    seed.transform.position = mPos;
-                    playerController.curSlot.slot.PlusCount(-1);
+                    if (Input.GetButtonDown("Fire1"))
+                    {
+                        GameObject seed = Instantiate(playerController.curItem.GetComponent<ItemPickUp>().item.seed);
+                        seed.transform.position = mPos;
+                        CropsManager.instance.Seeds.Add(seed.GetComponent<Seed>());
+                        playerController.curSlot.slot.PlusCount(-1);
+                    }
+
                 }
                 renderer.color = Color.white;
             }

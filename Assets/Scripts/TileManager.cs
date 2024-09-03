@@ -13,12 +13,10 @@ public class TileManager : MonoBehaviour
     public Tilemap[] objectTileMap;
     public TileBase farmLandTile;
     public Tile previousTile;
-    public float time;
     [SerializeField] private GameObject log;
 
     private void Awake()
     {
-        time = 3600;
         playerController = GetComponent<PlayerController>();
         instance = this;
     }
@@ -52,11 +50,11 @@ public class TileManager : MonoBehaviour
         if (farmLandTile == farmLandTileMap.GetTile(currentCell))
         {
             Color color = new Color(211f / 255f, 179f / 255f, 165f / 255f, 1);
-            StartCoroutine(WetTileCo(currentCell, color));
+            farmLandTileMap.SetColor(currentCell, color);
         }
     }
 
-    public void AtkTile()
+    public void LogAtkTile()
     {
         for(int i = 0; i < objectTileMap.Length; i++)
         {
@@ -64,9 +62,8 @@ public class TileManager : MonoBehaviour
 
             if (objectTileMap[i].GetTile(currentCell) != null)
             {
-                Camera.main.GetComponent<CameraShake>().Shake();
                 objectTileMap[i].SetTile(currentCell, null);
-                if(i == 2)
+                if(i == 1)
                 {
                     GameObject _log = Instantiate(log);
                     _log.transform.position = playerController.transform.position + playerController.LastMove;
@@ -74,20 +71,17 @@ public class TileManager : MonoBehaviour
                     _log.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3f,ForceMode2D.Impulse);
                     StartCoroutine(GravityCo(_log));
                 }
+                else if(i != 2)
+                {
+                    Camera.main.GetComponent<CameraShake>().Shake();
+                }
                 return;
             }
         }
 
     }
 
-    private IEnumerator WetTileCo(Vector3Int cell, Color _color)
-    {
-        farmLandTileMap.SetColor(cell, _color);
-        yield return new WaitForSeconds(time);
-        farmLandTileMap.SetColor(cell, Color.white);
-    }
-
-    private IEnumerator GravityCo(GameObject obj)
+    public IEnumerator GravityCo(GameObject obj)
     {
         obj.GetComponent<ItemPickUp>().isGet = false;
         yield return new WaitForSeconds(0.65f);

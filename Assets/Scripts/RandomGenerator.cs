@@ -22,11 +22,11 @@ public class RandomGenerator : MonoBehaviour
                 {
                     if (randCount == 2)
                     {
-                        tileMap[0].SetTile(new Vector3Int(i, j, 0), tileBase[randCount]);
+                        tileMap[2].SetTile(new Vector3Int(i, j, 0), tileBase[2]);
                     }
                     else
                     {
-                        for (int k = 0; k < tileMap.Length; k++)
+                        for (int k = 0; k < tileMap.Length - 1; k++)
                         {
                             tileMap[k].SetTile(new Vector3Int(i, j, 0), tileBase[randCount]);
                         }

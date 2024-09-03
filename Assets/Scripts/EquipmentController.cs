@@ -9,6 +9,7 @@ public class EquipmentController : MonoBehaviour
     private PlayerController playerController;
     [SerializeField] private GameObject handItemParent;
     public ItemPickUp[] handItems;
+    private bool isEquipment = true;
 
     private void Awake()
     {
@@ -27,37 +28,35 @@ public class EquipmentController : MonoBehaviour
 
     private void Update()
     {
-        if (!playerController.isMove)
+        if (isEquipment)
         {
-            if(playerController.isPlayerMove)
+            if (playerController.curSlot.slot.item != null)
             {
-                if (playerController.curSlot.slot.item != null)
+                playerController.EquipmentChange(playerController.curSlot.slot.item.equipmentType);
+
+                if (playerController.equipmentType == EquipmentType.Seed)
                 {
-                    playerController.EquipmentChange(playerController.curSlot.slot.item.equipmentType);
+                    Seed();
+                }
 
-                    if (playerController.equipmentType == EquipmentType.Seed)
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    switch (playerController.equipmentType)
                     {
-                        Seed();
-                    }
-
-                    if (Input.GetButtonDown("Fire1"))
-                    {
-                        switch (playerController.equipmentType)
-                        {
-                            case EquipmentType.WateringCan: WateringCan(); break;
-                            case EquipmentType.Hoe: Hoe(); break;
-                            case EquipmentType.Axe: Axe(); break;
-                        }
+                        case EquipmentType.WateringCan: WateringCan(); break;
+                        case EquipmentType.Hoe: Hoe(); break;
+                        case EquipmentType.Axe: Axe(); break;
                     }
                 }
-                else
+            }
+            else
+            {
+                playerController.EquipmentChange(EquipmentType.None);
+                if (playerController.curItem != null)
                 {
-                    playerController.EquipmentChange(EquipmentType.None);
-                    if(playerController.curItem != null)
-                    {
-                        playerController.curItem.SetActive(false);
-                        playerController.curItem = null;
-                    }
+                    playerController.mouseSelect.gameObject.SetActive(false);
+                    playerController.curItem.SetActive(false);
+                    playerController.curItem = null;
                 }
             }
         }
@@ -72,7 +71,11 @@ public class EquipmentController : MonoBehaviour
             if (handItems[i].item == playerController.curSlot.slot.item)
             {
                 playerController.curItem = handItems[i].gameObject;
-                animator.SetTrigger("Item");
+                if(playerController.isItem)
+                {
+                    animator.SetTrigger("Item");
+                    playerController.isItem = false;
+                }
                 handItems[i].gameObject.SetActive(true);
                 return;
             }
@@ -102,8 +105,11 @@ public class EquipmentController : MonoBehaviour
 
     private IEnumerator EquipmentCo()
     {
+        isEquipment = false;
         playerController.isPlayerMove = false;
+        GameManager.instance.PlayerStamina -= 1;
         yield return new WaitForSeconds(1);
         playerController.isPlayerMove = true;
+        isEquipment = true;
     }
 }
