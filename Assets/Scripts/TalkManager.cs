@@ -17,7 +17,7 @@ public class TalkManager : MonoBehaviour
         instance = this;
     }
 
-    public void ChangeTalk(Talk _talk)
+    public void ChangeTalk(NPC npc ,Talk _talk)
     {
         if(_talk.talkCount < _talk.talks.Length)
         {
@@ -29,6 +29,11 @@ public class TalkManager : MonoBehaviour
         else
         {
             talk.SetActive(false);
+
+            if(_talk.nextTalk != null)
+            {
+                npc.talk = _talk.nextTalk;
+            }
         }
     }
 

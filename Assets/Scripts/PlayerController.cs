@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public enum PlayerEquipmentType
@@ -27,7 +25,6 @@ public class PlayerController : MonoBehaviour
     public CopySlot curSlot;
     public EquipmentType equipmentType;
     public MouseSelect mouseSelect;
-    
 
     private void Awake() 
     {

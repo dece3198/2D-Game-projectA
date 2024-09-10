@@ -54,14 +54,10 @@ public class Seed : MonoBehaviour
 
         if(life < 0)
         {
+            CropsManager.instance.ReMoveSeed(this);
             Vector3Int currentCell = tilemap.WorldToCell(transform.position);
             tilemap.SetTile(currentCell, dieCrops);
             Destroy(gameObject);
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            CurCount++;
         }
     }
 }

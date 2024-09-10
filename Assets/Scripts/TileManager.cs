@@ -14,17 +14,21 @@ public class TileManager : MonoBehaviour
     public TileBase farmLandTile;
     public Tile previousTile;
     [SerializeField] private GameObject log;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip[] audioClips;
+
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        audioSource = GetComponent<AudioSource>();
         instance = this;
     }
 
     public void ChangeTile()
     {
         Vector3Int currentCell = groundTilMap.WorldToCell(playerController.transform.position + playerController.LastMove);
-        if (previousTile == groundTilMap.GetTile(currentCell))
+        if (previousTile == farmLandTileMap.GetTile(currentCell))
         {
             if (farmLandTile != farmLandTileMap.GetTile(currentCell))
             {
@@ -59,9 +63,16 @@ public class TileManager : MonoBehaviour
         for(int i = 0; i < objectTileMap.Length; i++)
         {
             Vector3Int currentCell = objectTileMap[i].WorldToCell(playerController.transform.position + playerController.LastMove);
-
+            
             if (objectTileMap[i].GetTile(currentCell) != null)
             {
+
+                if(objectTileMap[i] != objectTileMap[2])
+                {
+                    audioSource.PlayOneShot(audioClips[0]);
+                    Camera.main.GetComponent<CameraShake>().Shake();
+                }
+
                 objectTileMap[i].SetTile(currentCell, null);
                 if(i == 1)
                 {
@@ -70,10 +81,6 @@ public class TileManager : MonoBehaviour
                     _log.GetComponent<Rigidbody2D>().gravityScale = 1;
                     _log.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3f,ForceMode2D.Impulse);
                     StartCoroutine(GravityCo(_log));
-                }
-                else if(i != 2)
-                {
-                    Camera.main.GetComponent<CameraShake>().Shake();
                 }
                 return;
             }

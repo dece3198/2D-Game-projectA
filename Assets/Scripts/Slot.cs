@@ -65,12 +65,17 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
+        if(item != null)
+        {
+            UiManager.instance.information.SetActive(true);
+            UiManager.instance.Information(item);
+            UiManager.instance.information.transform.position = eventData.position + new Vector2(200,100);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        UiManager.instance.information.SetActive(false);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -162,11 +167,18 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(StoreManager.instance.isButton)
+        if (StoreManager.instance.isButton)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                AddItem(StoreManager.instance.storeSlot.item, StoreManager.instance.storeSlot.itemCount);
+                if (item == StoreManager.instance.storeSlot.item)
+                {
+                    PlusCount(StoreManager.instance.storeSlot.itemCount);
+                }
+                else
+                {
+                    AddItem(StoreManager.instance.storeSlot.item, StoreManager.instance.storeSlot.itemCount);
+                }
                 StoreManager.instance.isButton = false;
                 StoreManager.instance.storeSlot.ClearSlot();
             }

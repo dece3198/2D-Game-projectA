@@ -34,4 +34,15 @@ public class CropsManager : MonoBehaviour
             }
         }
     }
+
+    public void ReMoveSeed(Seed seed)
+    {
+        for(int i = 0; i < Seeds.Count;i++)
+        {
+            if(seed == Seeds[i])
+            {
+                Seeds.RemoveAt(i);
+            }
+        }
+    }
 }

@@ -10,11 +10,14 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private GameObject handItemParent;
     public ItemPickUp[] handItems;
     private bool isEquipment = true;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip[] audioClips;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -93,6 +96,7 @@ public class EquipmentController : MonoBehaviour
     private void Hoe()
     {
         animator.SetTrigger("Hoe");
+        audioSource.PlayOneShot(audioClips[0]);
         TileManager.instance.ChangeTile();
         StartCoroutine(EquipmentCo());
     }
@@ -100,6 +104,7 @@ public class EquipmentController : MonoBehaviour
     private void Axe()
     {
         animator.SetTrigger("Axe");
+        audioSource.PlayOneShot(audioClips[0]);
         StartCoroutine(EquipmentCo());
     }
 
@@ -108,6 +113,7 @@ public class EquipmentController : MonoBehaviour
         isEquipment = false;
         playerController.isPlayerMove = false;
         GameManager.instance.PlayerStamina -= 1;
+        GameManager.instance.Stamina();
         yield return new WaitForSeconds(1);
         playerController.isPlayerMove = true;
         isEquipment = true;

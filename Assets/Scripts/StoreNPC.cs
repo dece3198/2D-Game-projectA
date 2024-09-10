@@ -37,6 +37,13 @@ public class StoreNPC : MonoBehaviour
                 equipmentController.enabled = true;
                 InventoryManager.instance.slotsParent.transform.position = inventoryPos.position;
                 InventoryManager.instance.slotsParent.transform.parent.gameObject.SetActive(false);
+                if(StoreManager.instance.storeSlot.item != null)
+                {
+                    GameManager.instance.gold += (StoreManager.instance.storeSlot.item.price * StoreManager.instance.storeSlot.itemCount);
+                    StoreManager.instance.storeSlot.ClearSlot();
+                    StoreManager.instance.storeSlot.SetColor(0);
+                    StoreManager.instance.isButton = false;
+                }
             }
         }
     }

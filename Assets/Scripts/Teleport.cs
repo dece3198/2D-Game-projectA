@@ -12,7 +12,7 @@ public class Teleport : MonoBehaviour
     {
         if(collision.GetComponent<PlayerController>() != null)
         {
-            FadeInOut.instance.Fadee();
+            FadeInOut.instance.Fade();
             if(wall != null)
             {
                 wall.SetActive(false);

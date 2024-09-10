@@ -18,6 +18,6 @@ public class NPC : MonoBehaviour
 
     private void OnMouseDown()
     {
-        TalkManager.instance.ChangeTalk(talk);
+        TalkManager.instance.ChangeTalk(this,talk);
     }
 }

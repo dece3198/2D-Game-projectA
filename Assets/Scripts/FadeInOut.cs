@@ -17,7 +17,7 @@ public class FadeInOut : MonoBehaviour
         instance = this;
     }
 
-    public void Fadee()
+    public void Fade()
     {
         StartCoroutine(FadeFlow());
     }

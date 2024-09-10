@@ -17,3 +17,9 @@ MonoBehaviour:
   seed: {fileID: 1945805914404239118, guid: 48228e2b3c826e943aeb7f4b26cc2069, type: 3}
   itemType: 2
   equipmentType: 7
+  information:
+    name: "\uD638\uBC15 \uC528\uC557"
+    type: "\uC528\uC557"
+    data: "\uAC00\uC744\uC791\uBB3C. \uC131\uC7A5\uD558\uB824\uBA74 15\uC77C\uC774
+      \uC18C\uC694 \uB429\uB2C8\uB2E4."
+  price: 100

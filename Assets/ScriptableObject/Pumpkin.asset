@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Pumpkin
   m_EditorClassIdentifier: 
   itemImage: {fileID: 267580268, guid: 6326959f8f49cca489e8131aa49a45db, type: 3}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8373352634694396055, guid: d76fcaa951974e044bcf7a8d01da20fc, type: 3}
   seed: {fileID: 0}
   itemType: 2
   equipmentType: 0
+  information:
+    name: "\uD638\uBC15"
+    type: "\uC791\uBB3C"
+    data: 
+  price: 500
