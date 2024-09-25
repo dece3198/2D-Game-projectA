@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemType;
     [SerializeField] private TextMeshProUGUI itemPrice;
     [SerializeField] private TextMeshProUGUI itemdata;
+    [SerializeField] private GameObject escImage;
     private bool inventoryActiveSelf = false;
+    private bool isEsc = false;
 
     private void Awake()
     {
@@ -34,6 +37,40 @@ public class UiManager : MonoBehaviour
                 information.SetActive(false);
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            isEsc = !isEsc;
+            if(isEsc)
+            {
+                Time.timeScale = 0;
+                escImage.SetActive(true);
+            }
+            else
+            {
+                Time.timeScale = 1;
+                escImage.SetActive(false);
+            }
+        }
+
+    }
+
+    public void ContinueButton()
+    {
+        Time.timeScale = 1;
+        isEsc = false;
+        escImage.SetActive(false);
+    }
+
+    public void MainMenuButton()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ExitButton()
+    {
+        Application.Quit();
     }
 
     public void Information(Item item)

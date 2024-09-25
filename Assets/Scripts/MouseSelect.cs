@@ -40,9 +40,12 @@ public class MouseSelect : MonoBehaviour
                         CropsManager.instance.Seeds.Add(seed.GetComponent<Seed>());
                         playerController.curSlot.slot.PlusCount(-1);
                     }
-
+                    renderer.color = Color.white;
                 }
-                renderer.color = Color.white;
+                else
+                {
+                    renderer.color = Color.red;
+                }
             }
             else
             {

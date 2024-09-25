@@ -8,10 +8,19 @@ public class CropsManager : MonoBehaviour
     public static CropsManager instance;
     public List<Seed> Seeds = new List<Seed>();
     [SerializeField] private Tilemap  farmLandTileMap;
+    public Dictionary<int, GameObject> cropsDic = new Dictionary<int, GameObject>();
+    public Dictionary<SeedType, int> seedDic = new Dictionary<SeedType, int>();
+    public GameObject[] crops;
 
     private void Awake()
     {
         instance = this;
+
+        for(int i = 0; i < crops.Length; i++)
+        {
+            cropsDic.Add(i, crops[i]);
+            seedDic.Add(crops[i].GetComponent<Seed>().seedType, i);
+        }
     }
 
     public void ResetSeed()

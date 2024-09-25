@@ -6,19 +6,29 @@ public class Crops : MonoBehaviour
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject crops;
-    private bool isMouse = true;
+    public bool isMouse = true;
     private SpriteRenderer spriteRenderer;
+    [SerializeField] private Seed seed;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        seed = GetComponent<Seed>();
+    }
+
+    public void Update()
+    {
+        
     }
 
     public void OnMouseOver()
     {
         if(isMouse)
         {
-            MouseSelect.instance.isSelect = false;
+            if (MouseSelect.instance != null)
+            {
+                MouseSelect.instance.isSelect = false;
+            }
             GameManager.instance.MouseCursorChangePlus();
             isMouse = false;
         }
@@ -27,7 +37,10 @@ public class Crops : MonoBehaviour
     public void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
-        MouseSelect.instance.isSelect = true;
+        if (MouseSelect.instance != null)
+        {
+            MouseSelect.instance.isSelect = true;
+        }
         isMouse = true;
     }
 
@@ -39,13 +52,25 @@ public class Crops : MonoBehaviour
         _crops.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3f, ForceMode2D.Impulse);
         StartCoroutine(TileManager.instance.GravityCo(_crops));
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+
+
+        for(int i = 0; i < CropsManager.instance.Seeds.Count; i++)
+        {
+            if(seed == CropsManager.instance.Seeds[i])
+            {
+                CropsManager.instance.Seeds.RemoveAt(i);
+            }
+        }
         SetColor(0);
         Destroy(gameObject, 1);
     }
 
     private void OnDestroy()
     {
-        MouseSelect.instance.isSelect = true;
+        if (MouseSelect.instance != null)
+        {
+            MouseSelect.instance.isSelect = true;
+        }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
     }
 

@@ -7,11 +7,13 @@ public class StoreManager : MonoBehaviour
     public static StoreManager instance;
     public Slot storeSlot;
     public bool isButton = false;
-
+    public bool isStore = false;
+    public AudioSource audioSource;
 
     private void Awake()
     {
         instance = this;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()

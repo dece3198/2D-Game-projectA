@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         get { return minute; }
         set 
         {
-            minute = value; 
+            minute = value;
             if(minute >= 60)
             {
                 Hour += 1;
@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
         set 
         { 
             hour = value; 
-
             if(hour > 12)
             {
                 hour = 1;
@@ -66,6 +65,10 @@ public class GameManager : MonoBehaviour
         set 
         { 
             playerStamina = value; 
+            if(playerStamina > 100)
+            {
+                playerStamina = 100;
+            }
         }
     }
 
@@ -163,15 +166,12 @@ public class GameManager : MonoBehaviour
     private bool isAfternoon = false;
     public DayType curDay;
     private Dictionary<DayType, string> dayDic = new Dictionary<DayType, string>();
+    private Dictionary<string, DayType> dayStringDic = new Dictionary<string, DayType>();
 
     private void Awake()
     {
         instance = this;
-        hour = 6;
         timeText.text = string.Format("{0:D2}:{1:D2}", hour, (int)Minute) + " " + amPm;
-        gold = 500;
-        Month = 3;
-        Day = 1;
 
         dayDic.Add(DayType.월, "월");
         dayDic.Add(DayType.화, "화");
@@ -180,6 +180,13 @@ public class GameManager : MonoBehaviour
         dayDic.Add(DayType.금, "금");
         dayDic.Add(DayType.토, "토");
         dayDic.Add(DayType.일, "일");
+        dayStringDic.Add("월", DayType.월);
+        dayStringDic.Add("화", DayType.화);
+        dayStringDic.Add("수", DayType.수);
+        dayStringDic.Add("목", DayType.목);
+        dayStringDic.Add("금", DayType.금);
+        dayStringDic.Add("토", DayType.토);
+        dayStringDic.Add("일", DayType.일);
     }
 
     private void Start()
@@ -206,6 +213,11 @@ public class GameManager : MonoBehaviour
         {
             Sleep();
         }
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            Month += 1;
+        }
     }
 
     public void MouseCursorChangeTalk()
@@ -230,11 +242,97 @@ public class GameManager : MonoBehaviour
         Day++;
         dayImage.sprite = sunImage;
         NextDay();
+        TalkManager.instance.NextDay();
         playerStamina += 50;
         dayText.text = dayDic[curDay] + "," + Day.ToString();
         timeText.text = string.Format("{0:D2}:{1:D2}", hour, (int)Minute) + " " + amPm;
         staminaText.text = playerStamina.ToString() + "/" + maxStamina.ToString();
         staminaSlider.value = playerStamina / maxStamina;
+        SaveData();
+        DataManager.instance.SaveData();
+    }
+
+    public void LoadData()
+    {
+        gold = DataManager.instance.curData.gold;
+        Minute = DataManager.instance.curData.minute;
+        Hour = DataManager.instance.curData.hour;
+        Day = DataManager.instance.curData.day;
+        Month = DataManager.instance.curData.month;
+        PlayerStamina = DataManager.instance.curData.playerStamina;
+
+        if(DataManager.instance.curData.dayString.Length > 0)
+        {
+            curDay = dayStringDic[DataManager.instance.curData.dayString];
+        }
+
+        if (!DataManager.instance.curData.isStart)
+        {
+            
+            TileManager.instance.gameObject.transform.position = DataManager.instance.curData.playerPos;
+            for (int i = 0; i < DataManager.instance.curData.slotNumber.Count; i++)
+            {
+                InventoryManager.instance.slots[DataManager.instance.curData.slotNumber[i]].AddItem(InventoryManager.instance.itemDic[DataManager.instance.curData.itemNumber[i]], DataManager.instance.curData.itemCount[i]);
+            }
+
+            if(DataManager.instance.curData.cropsNumber.Count > 0)
+            {
+                for (int j = 0; j < DataManager.instance.curData.cropsNumber.Count; j++)
+                {
+                    GameObject crops = Instantiate(CropsManager.instance.cropsDic[DataManager.instance.curData.cropsNumber[j]]);
+                    crops.transform.position = DataManager.instance.curData.cropsPos[j];
+                    CropsManager.instance.Seeds.Add(crops.GetComponent<Seed>());
+                    crops.GetComponent<Seed>().CurCount = DataManager.instance.curData.seedCount[j];
+                    crops.GetComponent<Seed>().life = DataManager.instance.curData.seedLife[j];
+                }
+            }
+        }
+
+        dayText.text = dayDic[curDay] + "," + Day.ToString();
+        timeText.text = string.Format("{0:D2}:{1:D2}", hour, (int)Minute) + " " + amPm;
+        staminaText.text = playerStamina.ToString() + "/" + maxStamina.ToString();
+    }
+
+    private void SaveData()
+    {
+        DataManager.instance.curData.gold = gold;
+        DataManager.instance.curData.minute = Minute;
+        DataManager.instance.curData.hour = Hour;
+        DataManager.instance.curData.day = Day;
+        DataManager.instance.curData.month = Month;
+        DataManager.instance.curData.playerStamina = playerStamina;
+        DataManager.instance.curData.playerPos = TileManager.instance.gameObject.transform.position;
+
+        DataManager.instance.curData.slotNumber.Clear();
+        DataManager.instance.curData.itemNumber.Clear();
+        DataManager.instance.curData.itemCount.Clear();
+        DataManager.instance.curData.cropsNumber.Clear();
+        DataManager.instance.curData.seedCount.Clear();
+        DataManager.instance.curData.seedLife.Clear();
+        DataManager.instance.curData.cropsPos.Clear();
+
+        for (int i = 0; i < InventoryManager.instance.slots.Length; i++)
+        {
+            if (InventoryManager.instance.slots[i].item != null)
+            {
+                DataManager.instance.curData.slotNumber.Add(i);
+                DataManager.instance.curData.itemNumber.Add(InventoryManager.instance.itemNumberDic[InventoryManager.instance.slots[i].item]);
+                DataManager.instance.curData.itemCount.Add(InventoryManager.instance.slots[i].itemCount);
+            }
+        }
+
+        if(CropsManager.instance.Seeds.Count > 0)
+        {
+            for (int j = 0; j < CropsManager.instance.Seeds.Count; j++)
+            {
+                DataManager.instance.curData.cropsNumber.Add(CropsManager.instance.seedDic[CropsManager.instance.Seeds[j].seedType]);
+                DataManager.instance.curData.seedCount.Add(CropsManager.instance.Seeds[j].CurCount);
+                DataManager.instance.curData.seedLife.Add(CropsManager.instance.Seeds[j].life);
+                DataManager.instance.curData.cropsPos.Add(CropsManager.instance.Seeds[j].transform.position);
+            }
+        }
+
+        DataManager.instance.curData.dayString = dayDic[curDay];
     }
 
     private void NextDay()

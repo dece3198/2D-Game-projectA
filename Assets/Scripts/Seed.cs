@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public enum SeedType
+{
+    PumpkinSeed,TomatoSeed
+}
+
 public class Seed : MonoBehaviour
 {
-    [SerializeField] private GameObject crops;
     [SerializeField] private Sprite growthA;
     [SerializeField] private Sprite growthB;
+    [SerializeField] private Sprite cropsImage;
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile dieCrops;
     [SerializeField] private int curCount;
@@ -26,22 +31,26 @@ public class Seed : MonoBehaviour
             {
                 spriteRenderer.sprite = growthB;
             }
+
             if (curCount >= growthCount)
             {
-                GameObject _crops = Instantiate(crops);
-                _crops.transform.position = transform.position;
-                Destroy(gameObject);
+                spriteRenderer.sprite = cropsImage;
+                this.enabled = false;
+                StartCoroutine(BoxCO());
             }
         }
     }
 
     public int growthCount;
     public int life = 0;
+    public SeedType seedType;
     private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
 
@@ -52,12 +61,18 @@ public class Seed : MonoBehaviour
             tilemap = GameObject.Find("Plant Object").GetComponent<Tilemap>();
         }
 
-        if(life < 0)
+        if (life < 0)
         {
             CropsManager.instance.ReMoveSeed(this);
             Vector3Int currentCell = tilemap.WorldToCell(transform.position);
             tilemap.SetTile(currentCell, dieCrops);
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator BoxCO()
+    {
+        yield return new WaitForSeconds(1f);
+        boxCollider.enabled = true;
     }
 }

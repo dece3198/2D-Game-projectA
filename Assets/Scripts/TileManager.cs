@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -28,11 +29,24 @@ public class TileManager : MonoBehaviour
     public void ChangeTile()
     {
         Vector3Int currentCell = groundTilMap.WorldToCell(playerController.transform.position + playerController.LastMove);
-        if (previousTile == farmLandTileMap.GetTile(currentCell))
+
+        if (farmLandTile != farmLandTileMap.GetTile(currentCell))
         {
-            if (farmLandTile != farmLandTileMap.GetTile(currentCell))
+            if (previousTile == farmLandTileMap.GetTile(currentCell))
             {
                 farmLandTileMap.SetTile(currentCell, farmLandTile);
+                DataManager.instance.curData.farmLandPos.Add(currentCell);
+            }
+        }
+        else
+        {
+            farmLandTileMap.SetTile(currentCell, previousTile);
+            for (int i = 0; i < DataManager.instance.curData.farmLandPos.Count; i++)
+            {
+                if (DataManager.instance.curData.farmLandPos[i] == currentCell)
+                {
+                    DataManager.instance.curData.farmLandPos.RemoveAt(i);
+                }
             }
         }
     }
@@ -81,6 +95,17 @@ public class TileManager : MonoBehaviour
                     _log.GetComponent<Rigidbody2D>().gravityScale = 1;
                     _log.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3f,ForceMode2D.Impulse);
                     StartCoroutine(GravityCo(_log));
+                }
+
+
+                for (int j = 0; j < DataManager.instance.curData.tiles.Count; j++)
+                {
+                    if (currentCell == DataManager.instance.curData.tilePos[j])
+                    {
+                        DataManager.instance.curData.tiles.RemoveAt(j);
+                        DataManager.instance.curData.tilePos.RemoveAt(j);
+                        return;
+                    }
                 }
                 return;
             }

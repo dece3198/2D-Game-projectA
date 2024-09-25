@@ -11,6 +11,7 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private Image charactorImage;
     [SerializeField] private TextMeshProUGUI talkText;
     [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private NPC[] npcs;
 
     private void Awake()
     {
@@ -33,6 +34,20 @@ public class TalkManager : MonoBehaviour
             if(_talk.nextTalk != null)
             {
                 npc.talk = _talk.nextTalk;
+            }
+        }
+    }
+
+    public void NextDay()
+    {
+        for(int i = 0; i < npcs.Length; i++)
+        {
+            if (npcs[i].talk.nextDay != null)
+            {
+                if (npcs[i].talk.talkCount > 0)
+                {
+                    npcs[i].talk = npcs[i].talk.nextDay;
+                }
             }
         }
     }

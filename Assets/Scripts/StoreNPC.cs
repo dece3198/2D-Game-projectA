@@ -22,28 +22,27 @@ public class StoreNPC : MonoBehaviour
     public void OnMouseDown()
     {
         store.SetActive(true);
+        StoreManager.instance.isStore = true;
         equipmentController.enabled = false;
         InventoryManager.instance.slotsParent.transform.parent.gameObject.SetActive(true);
         InventoryManager.instance.slotsParent.transform.position = storePos.position;
     }
 
-    private void Update()
+    public void XButton()
     {
-        if(store.activeSelf)
+        if (store.activeSelf)
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            store.SetActive(false);
+            equipmentController.enabled = true;
+            StoreManager.instance.isStore = false;
+            InventoryManager.instance.slotsParent.transform.position = inventoryPos.position;
+            InventoryManager.instance.slotsParent.transform.parent.gameObject.SetActive(false);
+            if (StoreManager.instance.storeSlot.item != null)
             {
-                store.SetActive(false);
-                equipmentController.enabled = true;
-                InventoryManager.instance.slotsParent.transform.position = inventoryPos.position;
-                InventoryManager.instance.slotsParent.transform.parent.gameObject.SetActive(false);
-                if(StoreManager.instance.storeSlot.item != null)
-                {
-                    GameManager.instance.gold += (StoreManager.instance.storeSlot.item.price * StoreManager.instance.storeSlot.itemCount);
-                    StoreManager.instance.storeSlot.ClearSlot();
-                    StoreManager.instance.storeSlot.SetColor(0);
-                    StoreManager.instance.isButton = false;
-                }
+                GameManager.instance.gold += (StoreManager.instance.storeSlot.item.price * StoreManager.instance.storeSlot.itemCount);
+                StoreManager.instance.storeSlot.ClearSlot();
+                StoreManager.instance.storeSlot.SetColor(0);
+                StoreManager.instance.isButton = false;
             }
         }
     }

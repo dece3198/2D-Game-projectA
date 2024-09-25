@@ -19,7 +19,7 @@ MonoBehaviour:
       \uB9E1\uACE0 \uC788\uB294 \uBA5C\uB9AC\uC0E4\uB77C\uACE0 \uD574!"
   - NpcImage: {fileID: 21300000, guid: d654480754cf2e84bbbdf99c2e1273ce, type: 3}
     name: "\uBA5C\uB9AC\uC0E4"
-    conversation: "\uB9C8\uC744\uC5D0 \uAD81\uAE08\uD55C\uAC8C \uC788\uC73C\uBA74
-      \uC5B8\uC81C\uB4E0\uC9C0 \uBB3C\uC5B4\uBD10!"
+    conversation: "\uC6B0\uB9AC \uB9C8\uC744\uC5D0 \uC628\uAC78 \uD658\uC601\uD574!"
   talkCount: 0
   nextTalk: {fileID: 0}
+  nextDay: {fileID: 11400000, guid: 82868a389fb7a62479cef78baa42ca7a, type: 2}

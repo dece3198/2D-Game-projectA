@@ -183,5 +183,21 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                 StoreManager.instance.storeSlot.ClearSlot();
             }
         }
+
+        if(item != null)
+        {
+            if(StoreManager.instance.isStore)
+            {
+                if (eventData.button == PointerEventData.InputButton.Right)
+                {
+                    if(item.price > 0)
+                    {
+                        GameManager.instance.gold += (item.price * itemCount);
+                        StoreManager.instance.audioSource.Play();
+                        ClearSlot();
+                    }
+                }
+            }
+        }
     }
 }

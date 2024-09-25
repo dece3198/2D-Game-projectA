@@ -18,4 +18,5 @@ public class Talk : ScriptableObject
     public Talks[] talks;
     public int talkCount;
     public Talk nextTalk;
+    public Talk nextDay;
 }

@@ -17,3 +17,8 @@ MonoBehaviour:
   seed: {fileID: 0}
   itemType: 0
   equipmentType: 8
+  information:
+    name: "\uBB3C\uBFCC\uB9AC\uAC1C"
+    type: "\uB3C4\uAD6C"
+    data: 
+  price: 0
